@@ -1,9 +1,4 @@
-//
-// Created by Grey Look on 5/4/20.
-//
-
 #include "KMeans.h"
-#include <functional>
 #include <cmath>
 #include <limits>
 #include <queue>
@@ -12,10 +7,7 @@
 /* Private Methods */
 double KMeans::euclideanDistance(const PointCoordinate& point, const PointCoordinate& cluster) {
     const double squared_distance = std::pow((point.x - cluster.x), 2.0) + std::pow((point.y - cluster.y), 2.0);
-    // std::cout << std::setprecision(100);
-    //  std::cout << "squared distance: " << squared_distance << std::endl;
     const double distance = std::sqrt(std::abs(squared_distance));
-    // std::cout << "distance: " << distance << std::endl;
     return distance;
 }
 
