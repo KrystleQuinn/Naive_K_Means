@@ -11,9 +11,7 @@ private:
         double x{0}, y{0};
     };
     size_t points;
-    //  static std::vector<PointCoordinate> data;
     size_t means;
-    // static std::vector<PointCoordinate> clusters;
     size_t max_number;
     std::mt19937 mersenne_engine;
     std::uniform_real_distribution<double> distribution;
