@@ -73,7 +73,7 @@ void KMeans::assign(const std::vector<PointCoordinate>& data, const std::vector<
     std::vector<PointCoordinate> update_centroids(centroids.size());
     std::vector<size_t> cluster_size(centroids.size(), 0);
     std::queue<int> cluster_ids;
-    size_t cluster_id;
+    size_t cluster_id = 0;
     std::vector<PointCoordinate> assignments(data.size());
     for (auto const& point : data) {
         /* set min distance to max to start with */
