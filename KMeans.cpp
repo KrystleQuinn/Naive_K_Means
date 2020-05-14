@@ -68,39 +68,35 @@ KMeans::randomClusterGenerator(const std::vector<PointCoordinate>& data, size_t 
 
 /* Assign data point to closest cluster */
 /* Do I want to put the number of iterations in here or outside the function?? */
-void KMeans::assign(const std::vector<PointCoordinate>& data, const std::vector<PointCoordinate>& centroids) {
-    std::vector<PointCoordinate> centroids_(centroids);
-    std::vector<PointCoordinate> update_centroids(centroids.size());
-    std::vector<size_t> cluster_size(centroids.size(), 0);
-    std::queue<int> cluster_ids;
-    size_t cluster_id = 0;
-    std::vector<PointCoordinate> assignments(data.size());
-    for (auto const& point : data) {
-        /* set min distance to max to start with */
-        double minimum_distance = std::numeric_limits<double>::max();
-        for (auto const& cluster : centroids) {
-            size_t distance = euclideanDistance(point, cluster);
-            if (distance < minimum_distance) {
-                minimum_distance = distance;
-                cluster_ids.push(&cluster - &centroids[0]);
+void KMeans::assign(const std::vector<PointCoordinate>& data, const std::vector<PointCoordinate>& centroids, const int& iterations) {
+    while (iterations >= 0) {
+        std::vector<PointCoordinate> centroids_(centroids);
+        std::vector<PointCoordinate> update_centroids(centroids.size());
+        std::vector<size_t> cluster_size(centroids.size(), 0);
+        std::queue<int> cluster_ids;
+        size_t cluster_id = 0;
+        std::vector<PointCoordinate> assignments(data.size());
+        for (auto const& point : data) {
+            /* set min distance to max to start with */
+            double minimum_distance = std::numeric_limits<double>::max();
+            for (auto const& cluster : centroids) {
+                size_t distance = euclideanDistance(point, cluster);
+                if (distance < minimum_distance) {
+                    minimum_distance = distance;
+                    cluster_ids.push(&cluster - &centroids[0]);
+                }
             }
+            while (cluster_ids.size() > 1) {
+                cluster_ids.pop();
+            }
+            cluster_id = cluster_ids.back();
+            ++cluster_size[cluster_id];
+            updateCentroids(point, cluster_id, update_centroids);
         }
-        while (cluster_ids.size() > 1) {
-            cluster_ids.pop();
-        }
-        cluster_id = cluster_ids.back();
-        ++cluster_size[cluster_id];
-        updateCentroids(point, cluster_id, update_centroids);
+        updateMean(update_centroids, cluster_size, centroids_);
+        assign(data, centroids_, iterations - 1);
     }
-    std::cout << "Updated centroids: \n";
-    for (auto const& cluster : update_centroids) {
-        std::cout << "(" << cluster.x << "," << cluster.y << ")\n";
-    }
-    std::cout << "Cluster size: \n";
-    for (auto const& cluster : cluster_size) {
-        std::cout << cluster << " \n";
-    }
-    updateMean(update_centroids, cluster_size, centroids_);
+    exit((EXIT_SUCCESS));
 }
 
 /*std::ostream& operator<<(std::ostream& os, const KMeans::PointCoordinate& pc)

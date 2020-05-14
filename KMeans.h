@@ -35,7 +35,7 @@ public:
 
     std::vector<PointCoordinate> randomClusterGenerator(const std::vector<PointCoordinate>& data, size_t means_);
 
-    void assign(const std::vector<PointCoordinate>& data, const std::vector<PointCoordinate>& centroids);
+    void assign(const std::vector<PointCoordinate>& data, const std::vector<PointCoordinate>& centroids, const int& iterations_);
 
     //friend std::ostream& operator<<(std::ostream& os, const PointCoordinate& pc);
 };
